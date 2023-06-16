@@ -3,6 +3,8 @@ const searchButton = document.querySelector('#btnSearch');
 const homeButton = document.querySelector(`#btn_home`);
 
 import { table } from "../main.js";
+import { DateUtils } from "../utils/utils.js";
+
 
 // get all
 export function getAllOwners() {
@@ -32,7 +34,7 @@ function displayOwners(owners) {
         <tr id="${owner.idUser}">
             <td>${countId++}</td>
             <td>${owner.nameOwner}</td>
-            <td>${owner.registrationDate}</td>
+            <td>${DateUtils.formatDate(owner.registrationDate)}</td>
         </tr>
         `
         allOwners += ownerElementRow;
