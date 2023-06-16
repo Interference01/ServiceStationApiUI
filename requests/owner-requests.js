@@ -39,6 +39,7 @@ function displayOwners(owners) {
     });
 
     table.innerHTML = allOwners;
+    table.id = 'Owner';
 };
 
 

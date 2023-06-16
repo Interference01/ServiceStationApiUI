@@ -42,6 +42,7 @@ function displayCars(cars) {
     });
 
     table.innerHTML = allCars;
+    table.id = 'Cars';
 };
 
 // event 
