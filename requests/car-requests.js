@@ -1,4 +1,5 @@
 import { table } from "../main.js";
+import { DateUtils } from "../utils/utils.js";
 
 
 //get car
@@ -35,13 +36,14 @@ function displayCars(cars) {
             <td>${countId++}</td>
             <td>${car.nameAuto}</td>
             <td>${car.vinCode}</td>
-            <td>${car.yearsOfManufacture}</td>
+            <td>${DateUtils.formatDate(car.yearsOfManufacture)}</td>
         </tr>
         `;
         allCars += carElementRow;
     });
 
     table.innerHTML = allCars;
+    table.id = 'Cars';
 };
 
 // event 
