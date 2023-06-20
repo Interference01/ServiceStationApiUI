@@ -4,8 +4,15 @@ import { DateUtils } from "../utils/utils.js";
 
 export function getCarWork(idAuto) {
     fetch(`https://localhost:7276/CarWork?idAuto=${idAuto}`)
-    .then( data => data.json())
-    .then(response => displayCarWorks(response));
+        .then(data => data.json())
+        .then(response => {
+            clearTable();
+            displayCarWorks(response)
+        });
+};
+
+function clearTable() {
+    table.innerHTML = '';
 };
 
 function displayCarWorks(carWorks) {
