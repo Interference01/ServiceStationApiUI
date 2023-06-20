@@ -106,6 +106,22 @@ input[type="text"] {
   border: solid 1px;
 }
 
+/*  main block */
+.main_menu {
+}
+
+.container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.table_container {
+  display: flex;
+  margin: 0 auto;
+}
+
+
 
 /*  */
 header {
@@ -117,12 +133,6 @@ header {
   align-items: center;
   justify-content: space-between;
 
-}
-
-.container {
-  padding: 5%;
-  display: flex;
-  justify-content: center;
 }
 
 .wrap {
@@ -156,9 +166,7 @@ td {
   border-radius: 4px;
 }
 
-.table_container {
-  display: flex;
-}
+
 
 
 /* button back + home */

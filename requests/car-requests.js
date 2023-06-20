@@ -1,6 +1,7 @@
 import { table } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 
+export let idForBackButton = 0;
 
 //get car
 
@@ -11,6 +12,7 @@ export function getCar(idUser) {
             clearTable();
             displayCars(response);
         });
+    idForBackButton = idUser;
 }
 
 function clearTable() {
