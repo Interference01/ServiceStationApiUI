@@ -47,15 +47,3 @@ function displayCars(cars) {
     table.innerHTML = allCars;
     table.id = 'Cars';
 };
-
-// event 
-
-// table.addEventListener('click', function (event) {
-//     debugger;
-//     const target = event.target;
-//     if (target.tagName === 'TD') {
-//         const row = target.parentNode;
-//         const idUser = row.id;
-//         getCar(idUser);
-//     }
-// });

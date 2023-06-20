@@ -1,8 +1,4 @@
-const inputSearch = document.querySelector('#inputSearch');
-const searchButton = document.querySelector('#btnSearch');
-const homeButton = document.querySelector(`#btn_home`);
-
-import { table } from "../main.js";
+import { form, table } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 
 
@@ -13,7 +9,7 @@ export function getAllOwners() {
         .then(response => displayOwners(response));
 }
 
-function clearTable() {
+export function clearTable() {
     table.innerHTML = '';
 };
 
@@ -41,13 +37,13 @@ function displayOwners(owners) {
     });
 
     table.innerHTML = allOwners;
-    table.id = 'Owner';
+    table.id = 'Owners';
 };
 
 
 //get byName
 
-function searchByName(string) {
+export function searchByName(string) {
     fetch(`https://localhost:7276/Owners/searchByName?letters=${string}`)
         .then(data => data.json())
         .then(response => {
@@ -56,20 +52,28 @@ function searchByName(string) {
         });
 };
 
-// event
 
-searchButton.addEventListener('click', function (event) {
-    event.preventDefault();
-    searchByName(inputSearch.value);
-});
+// post Owner
+export function createFormOwner() {
+    form.innerHTML = 
+    `
+    
+    `;
+}
 
-inputSearch.addEventListener(`keydown`, function(event) {
-    if (event.key === `Enter`) {
-        event.preventDefault();
-        searchByName(inputSearch.value);
-    }
-});
+export function addOwner(nameOwner, date) {
+    const body = {
+        nameOwner : nameOwner,
+        date : date
+    };
 
-homeButton.addEventListener(`click`, function() {
-    getAllOwners();
-});
+    fetch(`https://localhost:7276/Owners`, {
+        method: `POST`,
+        body: JSON.stringify(body),
+        headers: {
+            "content-type": "application/json"
+        }
+    })
+    .then(date => data.json())
+    .then(response => console.log(response));
+}
