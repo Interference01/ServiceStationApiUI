@@ -1,12 +1,12 @@
 const backButton = document.querySelector(`#btn_back`);
-const homeButton = document.querySelector(`#btn_home`);
+export const homeButton = document.querySelector(`#btn_home`);
 const createButton = document.querySelector('#btn_create')
 
 const searchButton = document.querySelector('#btn_search');
 const inputSearch = document.querySelector('#input_search');
 
 
-export const form = document.querySelector('form')
+export const form = document.querySelector('#form_container')
 export const table = document.querySelector('table')
 
 import { getCar, idForBackButton } from "./requests/car-requests.js";
@@ -17,7 +17,7 @@ import { getCarWork } from "./requests/carWork-requests.js";
 
 table.addEventListener('click', function (event) {
     const target = event.target;
-    if (table.id === 'Owner') {
+    if (table.id === 'Owners') {
         if (target.tagName === 'TD') {
             const row = target.parentNode;
             const idUser = row.id;

@@ -1,4 +1,4 @@
-import { form, table } from "../main.js";
+import {  homeButton, form, table } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 
 
@@ -6,11 +6,15 @@ import { DateUtils } from "../utils/utils.js";
 export function getAllOwners() {
     fetch('https://localhost:7276/Owners/getAll')
         .then(data => data.json())
-        .then(response => displayOwners(response));
+        .then(response => {
+            clearTable();
+            displayOwners(response);
+        });
 }
 
 export function clearTable() {
     table.innerHTML = '';
+    form.innerHTML = '';
 };
 
 function displayOwners(owners) {
@@ -55,16 +59,30 @@ export function searchByName(string) {
 
 // post Owner
 export function createFormOwner() {
-    form.innerHTML = 
-    `
-    
+    form.innerHTML =
+        `
+    <label class="label">Owner</label>
+    <input class="form_container_input" placeholder="Name" id="inputOwnerName">
+    <input class="form_container_input" placeholder="Date: dd/mm/yyyy" id="inputOwnerDate">
+    <button class="button" style="margin-left: 120px; width: 100px;" id="btnSave">Save</button>
     `;
+
+    const nameInput = document.querySelector('#inputOwnerName');
+    const dateInput = document.querySelector('#inputOwnerDate');
+    const saveButton = document.querySelector('#btnSave');
+
+    saveButton.addEventListener('click', function () {
+        if(nameInput !== "")
+        {
+            addOwner(nameInput.value, dateInput.value)
+        }
+    })
 }
 
 export function addOwner(nameOwner, date) {
     const body = {
-        nameOwner : nameOwner,
-        date : date
+        nameOwner: nameOwner,
+        date: date
     };
 
     fetch(`https://localhost:7276/Owners`, {
@@ -74,6 +92,9 @@ export function addOwner(nameOwner, date) {
             "content-type": "application/json"
         }
     })
-    .then(date => data.json())
-    .then(response => console.log(response));
+        .then(data => data.json())
+        .then(response => {
+            console.log(response);
+            homeButton.click();
+        })
 }
