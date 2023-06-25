@@ -1,4 +1,4 @@
-import {  homeButton, form, table } from "../main.js";
+import {   generateBackButton, homeButton, form, table } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 
 
@@ -21,6 +21,7 @@ function displayOwners(owners) {
     let countId = 1;
     let allOwners =
         `
+    <table>
     <tr>
         <th>№</th>
         <th>Name</th>
@@ -39,7 +40,6 @@ function displayOwners(owners) {
         `
         allOwners += ownerElementRow;
     });
-
     table.innerHTML = allOwners;
     table.id = 'Owners';
 };
@@ -60,7 +60,7 @@ export function searchByName(string) {
 // post Owner
 export function createFormOwner() {
     form.innerHTML =
-        `
+    `
     <label class="label">Owner</label>
     <input class="form_container_input" placeholder="Name" id="inputOwnerName">
     <input class="form_container_input" placeholder="Date: dd/mm/yyyy" id="inputOwnerDate">
@@ -72,14 +72,13 @@ export function createFormOwner() {
     const saveButton = document.querySelector('#btnSave');
 
     saveButton.addEventListener('click', function () {
-        if(nameInput !== "")
-        {
+        if(nameInput !== ""){
             addOwner(nameInput.value, dateInput.value)
         }
-    })
+    });
 }
 
-export function addOwner(nameOwner, date) {
+function addOwner(nameOwner, date) {
     const body = {
         nameOwner: nameOwner,
         date: date
@@ -96,5 +95,8 @@ export function addOwner(nameOwner, date) {
         .then(response => {
             console.log(response);
             homeButton.click();
-        })
-}
+        });
+};
+
+// delete Owner
+

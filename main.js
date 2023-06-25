@@ -1,4 +1,3 @@
-const backButton = document.querySelector(`#btn_back`);
 export const homeButton = document.querySelector(`#btn_home`);
 const createButton = document.querySelector('#btn_create')
 
@@ -7,9 +6,9 @@ const inputSearch = document.querySelector('#input_search');
 
 
 export const form = document.querySelector('#form_container')
-export const table = document.querySelector('table')
+export const table = document.querySelector('#table_container')
 
-import { getCar, idForBackButton } from "./requests/car-requests.js";
+import { getCar } from "./requests/car-requests.js";
 import { createFormOwner, clearTable, getAllOwners, searchByName } from "./requests/owner-requests.js";
 import { getCarWork } from "./requests/carWork-requests.js";
 
@@ -38,22 +37,16 @@ homeButton.addEventListener(`click`, function () {
     getAllOwners();
 });
 
-backButton.addEventListener('click', function () {
-    if (table.id === `Cars`) {
-        getAllOwners();
-    } if (table.id === 'CarWorks') {
-        getCar(idForBackButton);
-    };
-});
+
 
 createButton.addEventListener('click', function () {
     if (table.id === 'Owners') {
         clearTable();
         createFormOwner();
     } if (table.id === 'Cars') {
-
+        clearTable();
     } if (table.id === 'CarWorks') {
-
+        clearTable();
     }
 });
 
@@ -72,6 +65,16 @@ inputSearch.addEventListener(`keydown`, function (event) {
         searchByName(inputSearch.value);
     }
 });
+
+
+
+export function generateBackButton() {
+    return `
+    <button class="btn_home" style="margin-right: 20px; margin-top: 3px;" id="btn_back">
+    <image src="/settings/3643764_back_backward_left_reply_turn_icon.svg" class="btn_icon"></image>
+    </button>
+    `;
+}
 
 
 // Start

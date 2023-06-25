@@ -1,5 +1,7 @@
-import { table } from "../main.js";
+import { generateBackButton, table } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
+import { getAllOwners } from "./owner-requests.js";
+
 
 export let idForBackButton = 0;
 
@@ -23,6 +25,7 @@ function displayCars(cars) {
     let countId = 1;
     let allCars =
         `
+    <table>
     <tr>
         <th>№</th>
         <th>Name</th>
@@ -44,6 +47,15 @@ function displayCars(cars) {
         allCars += carElementRow;
     });
 
-    table.innerHTML = allCars;
+    table.innerHTML = generateBackButton();
+    table.innerHTML = table.innerHTML + allCars;
     table.id = 'Cars';
+
+    const backButton = document.querySelector(`#btn_back`);
+    backButton.addEventListener('click', function () {
+            getAllOwners();
+    });
 };
+
+//post Car
+
