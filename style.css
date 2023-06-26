@@ -136,7 +136,7 @@ main {
   justify-content: center;
 }
 
-table tr:hover {
+td:hover {
   background-color: rgb(204, 219, 247)
 }
 
@@ -212,4 +212,8 @@ td {
   margin-left: 40%; 
   font-weight: 700; 
   font-size: large;
+}
+
+.selected {
+  background-color: rgb(204, 219, 247);
 }

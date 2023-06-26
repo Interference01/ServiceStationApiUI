@@ -1,6 +1,6 @@
 import { generateBackButton, table } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
-import { idForBackButton, getCar } from "./car-requests.js";
+import { _idUser, getCar } from "./car-requests.js";
 
 export function getCarWork(idAuto) {
     fetch(`https://localhost:7276/CarWork?idAuto=${idAuto}`)
@@ -49,6 +49,6 @@ function displayCarWorks(carWorks) {
 
     const backButton = document.querySelector(`#btn_back`);
     backButton.addEventListener('click', function () {
-            getCar(idForBackButton);
+            getCar(_idUser);
     });
 };
