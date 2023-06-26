@@ -1,4 +1,4 @@
-import {   generateBackButton, homeButton, form, table } from "../main.js";
+import {   homeButton, form, table } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 
 

@@ -1,9 +1,7 @@
-import { generateBackButton, table, form, homeButton } from "../main.js";
+import {  selectedOwner, generateBackButton, table, form, homeButton } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 import { getAllOwners } from "./owner-requests.js";
 
-
-export let _idUser;
 
 //get car
 
@@ -14,7 +12,6 @@ export function getCar(idUser) {
             clearTable();
             displayCars(response);
         });
-    _idUser = idUser;
 }
 
 function clearTable() {
@@ -83,11 +80,11 @@ export function createFormCar() {
 function addCar (nameAuto, date, vinCode) {
     const body = {
         nameAuto: nameAuto,
-        date: date,
+        yearsOfManufacture: date,
         vinCode: vinCode
     };
 
-    fetch(`https://localhost:7276/Cars?idOwner=${_idUser}`, {
+    fetch(`https://localhost:7276/Cars?idOwner=${selectedOwner.idUser}`, {
         method: `POST`,
         body: JSON.stringify(body),
         headers: {

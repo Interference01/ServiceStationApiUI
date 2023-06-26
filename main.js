@@ -10,12 +10,28 @@ export const table = document.querySelector('#table_container')
 
 import { getCar, createFormCar } from "./requests/car-requests.js";
 import { createFormOwner, clearTable, getAllOwners, searchByName } from "./requests/owner-requests.js";
-import { getCarWork } from "./requests/carWork-requests.js";
+import { getCarWork, createFormCarWork } from "./requests/carWork-requests.js";
 
-let owner = {
-    idUser: undefined,
-    nameOwner: undefined,
-    registrationDate: undefined
+export let selectedOwner = {
+    idUser: null,
+    nameOwner: null,
+    registrationDate: null
+};
+
+export let selectedCar = {
+    idUser: null,
+    idAuto: null,
+    name: null,
+    vinCode: null,
+    date: null
+}
+
+export let selectedWork = {
+    idAuto: null,
+    idWork: null,
+    mileage: null,
+    description: null,
+    note: null
 };
 
 let selectedRow = null;
@@ -47,23 +63,60 @@ table.addEventListener('click', function (event) {
         const name = row.querySelector('td:nth-child(2)').textContent;
         const registrationDate = row.querySelector('td:nth-child(3)').textContent;
 
-        owner = {
+        selectedOwner = {
             idUser: idUser,
             nameOwner: name,
             registrationDate: registrationDate
         };
-        if(selectedRow != null) {
-        selectedRow.classList.remove(`selected`);
+        if (selectedRow != null) {
+            selectedRow.classList.remove(`selected`);
         }
 
         row.classList.add(`selected`);
         selectedRow = row;
-    } if (table.id === 'Cars') {
 
+    } if (table.id === 'Cars') {
+        const row = target.parentNode;
+        const idUser = selectedOwner.idUser;
+        const idAuto = row.id;
+        const name = row.querySelector('td:nth-child(2)').textContent;
+        const vinCode = row.querySelector('td:nth-child(3)').textContent;
+        const date = row.querySelector('td:nth-child(4)').textContent;
+
+        selectedCar = {
+            idUser: idUser,
+            idAuto: idAuto,
+            name: name,
+            vinCode: vinCode,
+            date: date
+        };
+
+        selectedRow.classList.remove(`selected`);
+        row.classList.add(`selected`);
+        selectedRow = row;
 
     } if (table.id === 'CarWorks') {
 
-        
+        const row = target.parentNode;
+        const idAuto = selectedCar.idAuto;
+        const idWork = row.id;
+        const mileage = row.querySelector('td:nth-child(2)').textContent;
+        const description = row.querySelector('td:nth-child(3)').textContent;
+        const date = row.querySelector('td:nth-child(4)').textContent;
+        const note = row.querySelector('td:nth-child(5)').textContent;
+
+        selectedWork = {
+            idAuto: idAuto,
+            idWork: idWork,
+            mileage: mileage,
+            description: description,
+            date: date,
+            note: note
+        };
+
+        selectedRow.classList.remove(`selected`);
+        row.classList.add(`selected`);
+        selectedRow = row;
     }
 });
 
@@ -84,6 +137,7 @@ createButton.addEventListener('click', function () {
         createFormCar();
     } if (table.id === 'CarWorks') {
         clearTable();
+        createFormCarWork();
     }
 });
 
