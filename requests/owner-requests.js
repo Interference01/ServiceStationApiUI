@@ -81,7 +81,7 @@ export function createFormOwner() {
 function addOwner(nameOwner, date) {
     const body = {
         nameOwner: nameOwner,
-        date: date
+        registrationDate: date
     };
 
     fetch(`https://localhost:7276/Owners`, {
@@ -94,7 +94,9 @@ function addOwner(nameOwner, date) {
         .then(data => data.json())
         .then(response => {
             console.log(response);
-            homeButton.click();
+            if (response.ok) {
+                homeButton.click();
+            }
         });
 };
 

@@ -87,7 +87,7 @@ function addWork(note, mileage, description, date) {
     const body = {
         mileage: mileage,
         descriptionWork: description,
-        date: date,
+        date: null,
         note: note,
     };
 

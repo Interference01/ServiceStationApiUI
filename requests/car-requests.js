@@ -80,8 +80,8 @@ export function createFormCar() {
 function addCar (nameAuto, date, vinCode) {
     const body = {
         nameAuto: nameAuto,
-        yearsOfManufacture: date,
-        vinCode: vinCode
+        vinCode: vinCode,
+        yearsOfManufacture: date
     };
 
     fetch(`https://localhost:7276/Cars?idOwner=${selectedOwner.idUser}`, {
@@ -94,6 +94,8 @@ function addCar (nameAuto, date, vinCode) {
         .then(data => data.json())
         .then(response => {
             console.log(response);
-            homeButton.click();
+            if (response.ok) {
+                homeButton.click();
+            }
         })
 };
