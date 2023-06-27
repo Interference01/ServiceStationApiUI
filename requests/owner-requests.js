@@ -1,4 +1,4 @@
-import {   homeButton, form, table } from "../main.js";
+import { homeButton, form, table } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 
 
@@ -60,7 +60,7 @@ export function searchByName(string) {
 // post Owner
 export function createFormOwner() {
     form.innerHTML =
-    `
+        `
     <label class="label">Owner</label>
     <input class="form_container_input" placeholder="Name" id="inputOwnerName">
     <input class="form_container_input" placeholder="Date: dd/mm/yyyy" id="inputOwnerDate">
@@ -72,7 +72,7 @@ export function createFormOwner() {
     const saveButton = document.querySelector('#btnSave');
 
     saveButton.addEventListener('click', function () {
-        if(nameInput !== ""){
+        if (nameInput !== "") {
             addOwner(nameInput.value, dateInput.value)
         }
     });
@@ -94,11 +94,23 @@ function addOwner(nameOwner, date) {
         .then(data => data.json())
         .then(response => {
             console.log(response);
-            if (response.ok) {
-                homeButton.click();
-            }
+            homeButton.click();
         });
 };
 
 // delete Owner
 
+export function deleteOwner(idUser) {
+    fetch(`https://localhost:7276/Owners?idOwner=${idUser}`, {
+        method: `DELETE`,
+        headers: {
+            "content-type": "application/json"
+        }
+    })
+        .then(response => {
+            console.log(response);
+            if (response.ok) {
+                homeButton.click();
+            }
+        });
+}
