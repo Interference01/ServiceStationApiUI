@@ -1,4 +1,4 @@
-import { homeButton, selectedCar, form, generateBackButton, table } from "../main.js";
+import { homeButton, selectedCar, form, generateBackButton, table, selectedOwner } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 import { getCar } from "./car-requests.js";
 
@@ -51,7 +51,7 @@ function displayCarWorks(carWorks) {
 
     const backButton = document.querySelector(`#btn_back`);
     backButton.addEventListener('click', function () {
-        getCar(_idUser);
+        getCar(selectedOwner.idUser);
     });
 };
 
@@ -82,12 +82,11 @@ export function createFormCarWork() {
     });
 }
 
-
 function addWork(note, mileage, description, date) {
     const body = {
         mileage: mileage,
         descriptionWork: description,
-        date: date,
+        date: null,
         note: note,
     };
 
@@ -102,7 +101,24 @@ function addWork(note, mileage, description, date) {
         .then(response => {
             console.log(response);
             if (response.ok) {
-                homeButton.click();
+                getCarWork(selectedCar.idAuto);
             }
         });
 };
+
+// delete
+
+export function deleteCarWork(idWork) {
+    fetch(`https://localhost:7276/CarWork?idWork=${idWork}`, {
+        method: `DELETE`,
+        headers: {
+            "content-type": "application/json"
+        }
+    })
+        .then(response => {
+            console.log(response);
+            if (response.ok) {
+                getCarWork(selectedCar.idAuto);
+            }
+        });
+}

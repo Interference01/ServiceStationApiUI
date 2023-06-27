@@ -1,4 +1,4 @@
-import {  selectedOwner, generateBackButton, table, form, homeButton } from "../main.js";
+import { selectedOwner, generateBackButton, table, form, homeButton } from "../main.js";
 import { DateUtils } from "../utils/utils.js";
 import { getAllOwners } from "./owner-requests.js";
 
@@ -50,14 +50,14 @@ function displayCars(cars) {
 
     const backButton = document.querySelector(`#btn_back`);
     backButton.addEventListener('click', function () {
-            getAllOwners();
+        getAllOwners();
     });
 };
 
 //post Car
 export function createFormCar() {
     form.innerHTML =
-    `
+        `
     <label class="label">Car</label>
     <input class="form_container_input" placeholder="Name" id="inputCarName">
     <input class="form_container_input" placeholder="Date: dd/mm/yyyy" id="inputCarDate">
@@ -71,17 +71,17 @@ export function createFormCar() {
     const saveButton = document.querySelector('#btnSave');
 
     saveButton.addEventListener('click', function () {
-        if(nameInput !== ""){
+        if (nameInput !== "") {
             addCar(nameInput.value, dateInput.value, vinInput.value)
         }
     })
 }
 
-function addCar (nameAuto, date, vinCode) {
+function addCar(nameAuto, date, vinCode) {
     const body = {
         nameAuto: nameAuto,
-        yearsOfManufacture: date,
-        vinCode: vinCode
+        vinCode: vinCode,
+        yearsOfManufacture: date
     };
 
     fetch(`https://localhost:7276/Cars?idOwner=${selectedOwner.idUser}`, {
@@ -94,6 +94,25 @@ function addCar (nameAuto, date, vinCode) {
         .then(data => data.json())
         .then(response => {
             console.log(response);
-            homeButton.click();
+            if (response.ok) {
+                getCar(selectedOwner.idUser);
+            }
         })
 };
+
+// delete 
+
+export function deleteCar(idAuto) {
+    fetch(`https://localhost:7276/Cars?idAuto=${idAuto}`, {
+        method: `DELETE`,
+        headers: {
+            "content-type": "application/json"
+        }
+    })
+        .then(response => {
+            console.log(response);
+            if (response.ok) {
+                getCar(selectedOwner.idUser);
+            }
+        });
+}

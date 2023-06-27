@@ -1,5 +1,6 @@
 export const homeButton = document.querySelector(`#btn_home`);
 const createButton = document.querySelector('#btn_create')
+const deleteButton = document.querySelector(`#btn_delete`)
 
 const searchButton = document.querySelector('#btn_search');
 const inputSearch = document.querySelector('#input_search');
@@ -8,9 +9,9 @@ const inputSearch = document.querySelector('#input_search');
 export const form = document.querySelector('#form_container')
 export const table = document.querySelector('#table_container')
 
-import { getCar, createFormCar } from "./requests/car-requests.js";
-import { createFormOwner, clearTable, getAllOwners, searchByName } from "./requests/owner-requests.js";
-import { getCarWork, createFormCarWork } from "./requests/carWork-requests.js";
+import { deleteOwner, createFormOwner, clearTable, getAllOwners, searchByName } from "./requests/owner-requests.js";
+import { deleteCar, getCar, createFormCar } from "./requests/car-requests.js";
+import { deleteCarWork, getCarWork, createFormCarWork } from "./requests/carWork-requests.js";
 
 export let selectedOwner = {
     idUser: null,
@@ -126,8 +127,6 @@ homeButton.addEventListener(`click`, function () {
     getAllOwners();
 });
 
-
-
 createButton.addEventListener('click', function () {
     if (table.id === 'Owners') {
         clearTable();
@@ -141,6 +140,38 @@ createButton.addEventListener('click', function () {
     }
 });
 
+deleteButton.addEventListener('click', function () {
+    if (table.id === 'Owners') {
+        if (selectedOwner != null) {
+            const confirmed = confirm(`Вы уверены, что хотите удалить ${selectedOwner.nameOwner}? `);
+
+            if (confirmed) {
+                deleteOwner(selectedOwner.idUser);
+            }
+        }
+    } if (table.id === 'Cars') {
+        if (selectedCar != null) {
+            const confirmed = confirm(`Вы уверены, что хотите удалить ${selectedCar.name}? `);
+
+            if (confirmed) {
+                deleteCar(selectedCar.idAuto);
+            }
+        }
+    } if (table.id === 'CarWorks') {
+        if (selectedWork != null) {
+            const confirmed = confirm(`Вы уверены, что хотите удалить автомобильные роботы ? `);
+
+            if (confirmed) {
+                deleteCarWork(selectedWork.idWork);
+            }
+        }
+    }
+});
+window.addEventListener('keydown', function(event) {
+    if (event.key === 'Delete') {
+        deleteButton.click();
+    }
+  });
 
 
 // search field event
