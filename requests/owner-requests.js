@@ -1,8 +1,8 @@
-import { homeButton, form, table } from "../main.js";
-import { DateUtils } from "../utils/utils.js";
+import { homeButton, clearTable, form, table } from "../main.js";
+import { formatDate } from "../utils/utils.js";
 
 
-// get all
+// GET
 export function getAllOwners() {
     fetch('https://localhost:7276/Owners/getAll')
         .then(data => data.json())
@@ -11,11 +11,6 @@ export function getAllOwners() {
             displayOwners(response);
         });
 }
-
-export function clearTable() {
-    table.innerHTML = '';
-    form.innerHTML = '';
-};
 
 function displayOwners(owners) {
     let countId = 1;
@@ -35,7 +30,7 @@ function displayOwners(owners) {
         <tr id="${owner.idUser}">
             <td>${countId++}</td>
             <td>${owner.nameOwner}</td>
-            <td>${DateUtils.formatDate(owner.registrationDate)}</td>
+            <td>${formatDate(owner.registrationDate)}</td>
         </tr>
         `
         allOwners += ownerElementRow;
@@ -45,7 +40,7 @@ function displayOwners(owners) {
 };
 
 
-//get byName
+// GET byName
 
 export function searchByName(string) {
     fetch(`https://localhost:7276/Owners/searchByName?letters=${string}`)
@@ -57,14 +52,14 @@ export function searchByName(string) {
 };
 
 
-// post Owner
-export function createFormOwner() {
+// POST
+export function createPostFormOwner() {
     form.innerHTML =
         `
-    <label class="label">Owner</label>
-    <input class="form_container_input" placeholder="Name" id="inputOwnerName">
-    <input class="form_container_input" placeholder="Date: dd/mm/yyyy" id="inputOwnerDate">
-    <button class="button" style="margin-left: 120px; width: 100px;" id="btnSave">Save</button>
+        <label class="label">Owner</label>
+        <input class="form_container_input" placeholder="Name" id="inputOwnerName">
+        <input class="form_container_input" placeholder="Date: dd/mm/yyyy" id="inputOwnerDate">
+        <button class="button" style="margin-left: 120px; width: 100px;" id="btnSave">Save</button>
     `;
 
     const nameInput = document.querySelector('#inputOwnerName');
@@ -98,11 +93,53 @@ function addOwner(nameOwner, date) {
         });
 };
 
-// delete Owner
+// DELETE
 
 export function deleteOwner(idUser) {
     fetch(`https://localhost:7276/Owners?idOwner=${idUser}`, {
         method: `DELETE`,
+        headers: {
+            "content-type": "application/json"
+        }
+    })
+        .then(response => {
+            console.log(response);
+            if (response.ok) {
+                homeButton.click();
+            }
+        });
+}
+
+
+//  PUT
+export function createPutFormOwner(selectedOwner) {
+    form.innerHTML =
+        `
+        <label class="label">Owner</label>
+        <input class="form_container_input" placeholder="Name" value="${selectedOwner.nameOwner}" id="inputOwnerName">
+        <input class="form_container_input" placeholder="Date: dd/mm/yyyy" value="${selectedOwner.registrationDate}" id="inputOwnerDate">
+        <button class="button" style="margin-left: 120px; width: 100px;" id="btnSave">Save</button>
+    `;
+
+    const nameInput = document.querySelector('#inputOwnerName');
+    const dateInput = document.querySelector('#inputOwnerDate');
+    const saveButton = document.querySelector('#btnSave');
+
+    saveButton.addEventListener('click', function () {
+        if (nameInput.value !== "") {
+            updateOwner(selectedOwner.idOwner, nameInput.value, dateInput.value)
+        }
+    });
+}
+
+function updateOwner(idOwner, nameOwner, registrationDate) {
+    let body = {
+        nameOwner: nameOwner,
+        registrationDate: registrationDate
+    }
+    fetch(`https://localhost:7276/Owners?idOwner=${idOwner}`, {
+        method: `PUT`,
+        body: JSON.stringify(body),
         headers: {
             "content-type": "application/json"
         }

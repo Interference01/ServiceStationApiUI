@@ -1,5 +1,5 @@
-import { homeButton, selectedCar, form, generateBackButton, table, selectedOwner } from "../main.js";
-import { DateUtils } from "../utils/utils.js";
+import { selectedCar, clearTable, form, table, selectedOwner } from "../main.js";
+import { formatDate, generateBackButton } from "../utils/utils.js";
 import { getCar } from "./car-requests.js";
 
 
@@ -13,9 +13,6 @@ export function getCarWork(idAuto) {
         });
 };
 
-function clearTable() {
-    table.innerHTML = '';
-};
 
 function displayCarWorks(carWorks) {
     let countId = 1;
@@ -38,7 +35,7 @@ function displayCarWorks(carWorks) {
             <td>${countId++}</td>
             <td>${carWork.mileage}</td>
             <td>${carWork.descriptionWork}</td>
-            <td>${DateUtils.formatDate(carWork.date)}</td>
+            <td>${formatDate(carWork.date)}</td>
             <td>${carWork.note}</td>
         </tr>
         `;
@@ -51,14 +48,14 @@ function displayCarWorks(carWorks) {
 
     const backButton = document.querySelector(`#btn_back`);
     backButton.addEventListener('click', function () {
-        getCar(selectedOwner.idUser);
+        getCar(selectedOwner.idOwner);
     });
 };
 
 
-// post 
+// POST
 
-export function createFormCarWork() {
+export function createPostFormCarWork() {
     form.innerHTML =
         `
     <label class="label">Work</label>
@@ -85,8 +82,8 @@ export function createFormCarWork() {
 function addWork(note, mileage, description, date) {
     const body = {
         mileage: mileage,
-        descriptionWork: description,
-        date: null,
+        description: description,
+        date: date,
         note: note,
     };
 
@@ -100,13 +97,11 @@ function addWork(note, mileage, description, date) {
         .then(data => data.json())
         .then(response => {
             console.log(response);
-            if (response.ok) {
-                getCarWork(selectedCar.idAuto);
-            }
+            getCarWork(selectedCar.idAuto);
         });
 };
 
-// delete
+// DELETE
 
 export function deleteCarWork(idWork) {
     fetch(`https://localhost:7276/CarWork?idWork=${idWork}`, {
@@ -120,5 +115,54 @@ export function deleteCarWork(idWork) {
             if (response.ok) {
                 getCarWork(selectedCar.idAuto);
             }
+        });
+}
+
+
+// PUT
+
+export function createPutFormCarWork(selectedWork) {
+    form.innerHTML =
+        `
+        <label class="label">Work</label>
+        <input class="form_container_input" placeholder="Mileage" value="${selectedWork.mileage}" id="inputWorkMileage">
+        <input class="form_container_input" placeholder="Description" value="${selectedWork.description}" id="inputWorkDescription">
+        <input class="form_container_input" placeholder="Date: dd/mm/yyyy" value="${selectedWork.date}" id="inputWorkDate">
+        <input class="form_container_input" placeholder="Note" value="${selectedWork.note}" id="inputWorkNote">
+        <button class="button" style="margin-left: 120px; width: 100px;" id="btnSave">Save</button>
+    `;
+
+    const mileageInput = document.querySelector('#inputWorkMileage');
+    const descriptionInput = document.querySelector('#inputWorkDescription');
+    const dateInput = document.querySelector('#inputWorkDate');
+    const noteInput = document.querySelector('#inputWorkNote');
+    const saveButton = document.querySelector('#btnSave');
+
+    saveButton.addEventListener('click', function () {
+        if (descriptionInput.value !== "") {
+            updateWork(selectedWork.idWork, mileageInput.value, descriptionInput.value, dateInput.value, noteInput.value );
+        }
+    });
+}
+
+function updateWork(idWork, mileage, description, date, note) {
+    let body = {
+        mileage: mileage,
+        description: description,
+        date: date,
+        note: note
+    }
+
+    fetch(`https://localhost:7276/CarWork?idWork=${idWork}`, {
+        method: `PUT`,
+        body: JSON.stringify(body),
+        headers: {
+            "content-type": "application/json"
+        }
+    })
+        .then(response => {
+            clearTable();
+            console.log(response);
+            getCarWork(selectedCar.idAuto);
         });
 }
