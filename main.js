@@ -1,5 +1,6 @@
 export const homeButton = document.querySelector(`#btn_home`);
 const createButton = document.querySelector('#btn_create')
+const updateButton = document.querySelector(`#btn_update`)
 const deleteButton = document.querySelector(`#btn_delete`)
 
 const searchButton = document.querySelector('#btn_search');
@@ -9,18 +10,18 @@ const inputSearch = document.querySelector('#input_search');
 export const form = document.querySelector('#form_container')
 export const table = document.querySelector('#table_container')
 
-import { deleteOwner, createFormOwner, clearTable, getAllOwners, searchByName } from "./requests/owner-requests.js";
-import { deleteCar, getCar, createFormCar } from "./requests/car-requests.js";
-import { deleteCarWork, getCarWork, createFormCarWork } from "./requests/carWork-requests.js";
+import { getAllOwners, createPostFormOwner, deleteOwner, createPutFormOwner,   searchByName } from "./requests/owner-requests.js";
+import { getCar, createPostFormCar, deleteCar, createPutFormCar } from "./requests/car-requests.js";
+import { getCarWork, createPostFormCarWork, deleteCarWork, createPutFormCarWork } from "./requests/carWork-requests.js";
 
 export let selectedOwner = {
-    idUser: null,
+    idOwner: null,
     nameOwner: null,
     registrationDate: null
 };
 
 export let selectedCar = {
-    idUser: null,
+    idOwner: null,
     idAuto: null,
     name: null,
     vinCode: null,
@@ -32,10 +33,17 @@ export let selectedWork = {
     idWork: null,
     mileage: null,
     description: null,
+    date: null,
     note: null
 };
 
 let selectedRow = null;
+
+export function clearTable() {
+    form.innerHTML = '';
+    table.innerHTML = '';
+};
+
 
 //table event
 
@@ -44,8 +52,8 @@ table.addEventListener('dblclick', function (event) {
     if (table.id === 'Owners') {
         if (target.tagName === 'TD') {
             const row = target.parentNode;
-            const idUser = row.id;
-            getCar(idUser);
+            const idOwner = row.id;
+            getCar(idOwner);
         }
     } if (table.id === 'Cars') {
         if (target.tagName === 'TD') {
@@ -65,7 +73,7 @@ table.addEventListener('click', function (event) {
         const registrationDate = row.querySelector('td:nth-child(3)').textContent;
 
         selectedOwner = {
-            idUser: idUser,
+            idOwner: idUser,
             nameOwner: name,
             registrationDate: registrationDate
         };
@@ -78,14 +86,14 @@ table.addEventListener('click', function (event) {
 
     } if (table.id === 'Cars') {
         const row = target.parentNode;
-        const idUser = selectedOwner.idUser;
+        const idUser = selectedOwner.idOwner;
         const idAuto = row.id;
         const name = row.querySelector('td:nth-child(2)').textContent;
         const vinCode = row.querySelector('td:nth-child(3)').textContent;
         const date = row.querySelector('td:nth-child(4)').textContent;
 
         selectedCar = {
-            idUser: idUser,
+            idOwner: idUser,
             idAuto: idAuto,
             name: name,
             vinCode: vinCode,
@@ -130,13 +138,26 @@ homeButton.addEventListener(`click`, function () {
 createButton.addEventListener('click', function () {
     if (table.id === 'Owners') {
         clearTable();
-        createFormOwner();
+        createPostFormOwner();
     } if (table.id === 'Cars') {
         clearTable();
-        createFormCar();
+        createPostFormCar();
     } if (table.id === 'CarWorks') {
         clearTable();
-        createFormCarWork();
+        createPostFormCarWork();
+    }
+});
+
+updateButton.addEventListener('click', function() {
+    if (table.id === 'Owners' & selectedOwner.idOwner != null) {
+        clearTable();
+        createPutFormOwner(selectedOwner);
+    } if (table.id === 'Cars' & selectedCar.idAuto != null) {
+        clearTable();
+        createPutFormCar(selectedCar);
+    } if (table.id === 'CarWorks' & selectedWork.idWork != null) {
+        clearTable();
+        createPutFormCarWork(selectedWork);
     }
 });
 
@@ -146,7 +167,7 @@ deleteButton.addEventListener('click', function () {
             const confirmed = confirm(`Вы уверены, что хотите удалить ${selectedOwner.nameOwner}? `);
 
             if (confirmed) {
-                deleteOwner(selectedOwner.idUser);
+                deleteOwner(selectedOwner.idOwner);
             }
         }
     } if (table.id === 'Cars') {
@@ -187,16 +208,6 @@ inputSearch.addEventListener(`keydown`, function (event) {
         searchByName(inputSearch.value);
     }
 });
-
-
-
-export function generateBackButton() {
-    return `
-    <button class="btn_home" style="margin-right: 20px; margin-top: 3px;" id="btn_back">
-    <image src="/settings/3643764_back_backward_left_reply_turn_icon.svg" class="btn_icon"></image>
-    </button>
-    `;
-}
 
 
 // Start
